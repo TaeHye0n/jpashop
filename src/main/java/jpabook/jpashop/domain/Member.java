@@ -21,6 +21,7 @@ public class Member {
     @Embedded
     private Address address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member") //연관관계의 주인은 order
     private List<Order> orders = new ArrayList<>();
 }
