@@ -72,4 +72,16 @@ public class OrderQueryRepository {
                 .map(o -> o.getOrderId())
                 .collect(Collectors.toList());
     }
+
+    //1대다 조인이라 데이터가 늘어나서 중복이 있음 대신 쿼리는 한 번만 나감, 페이징 X
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderPrice, oi.count)" +
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d" +
+                        " join o.orderItems oi" +
+                        " join oi.item i", OrderFlatDto.class)
+                .getResultList();
+    }
 }
